@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merry Christmas for My Love</title>
+<title>Merry Christmas for Hanbyeol</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 
@@ -50,10 +50,10 @@
     box-sizing: border-box;
   }
 
-  /* 상단 디데이: 귀여운 말풍선 느낌 */
+  /* 상단 디데이 */
   #dday-area {
     text-align: center;
-    font-family: 'Gaegu', cursive; /* 조금 더 귀여운 폰트 */
+    font-family: 'Gaegu', cursive;
     font-size: 1.8em;
     margin-bottom: 50px;
     opacity: 0;
@@ -71,7 +71,7 @@
     box-shadow: 0 4px 10px rgba(255, 183, 178, 0.5);
   }
 
-  /* 편지 텍스트: 선명하면서 부드럽게 */
+  /* 편지 텍스트 */
   .typing-line {
     font-size: 2.1em;
     font-weight: 800;
@@ -83,7 +83,7 @@
     text-shadow: 1px 1px 0px white;
   }
 
-  /* 버튼 디자인: 둥글둥글하고 귀여운 느낌 */
+  /* 버튼 디자인 */
   #btn-area {
     display: none;
     text-align: center;
@@ -107,10 +107,9 @@
   button:hover {
     background: #ff8fa3;
     transform: scale(1.1) translateY(-3px);
-    box-shadow: 0 8px 20px rgba(255, 143, 163, 0.4);
   }
 
-  /* 사진 구역: 둥근 모서리와 핑크 테두리 */
+  /* 사진 구역 */
   #photo-area {
     display: none;
     text-align: center;
@@ -150,6 +149,10 @@
 </head>
 <body>
 
+<audio id="myAudio" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <div class="container">
   <div id="dday-area">
     우리가 사랑한 지 <span id="days"></span>일째 ❤️
@@ -158,7 +161,7 @@
   <div id="letter-container"></div>
 
   <div id="btn-area">
-    <button onclick="showPhoto()">선물 열어보기 🎁</button>
+    <button onclick="showPhoto()">선물 열어보기 & 음악 재생 🎁</button>
   </div>
 
   <div id="photo-area">
@@ -170,11 +173,13 @@
 </div>
 
 <script>
+  // 디데이 계산
   const startDate = new Date("2024-02-15"); 
   const today = new Date();
   const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
   document.getElementById("days").innerText = diff;
 
+  // 편지 내용
   const content = [
     "한별아, 너에게 전하고 싶은 말이 있어.",
     "우리가 만난 지 벌써 많은 시간이 흘렀네.",
@@ -188,6 +193,7 @@
   const container = document.getElementById('letter-container');
   let lineIndex = 0;
 
+  // 타이핑 효과 함수
   function typeLine() {
     if (lineIndex < content.length) {
       const lineDiv = document.createElement('div');
@@ -215,17 +221,26 @@
     }
   }
 
+  // 버튼 클릭 시 실행되는 함수
   function showPhoto() {
+    // 1. 음악 재생 시작
+    const audio = document.getElementById("myAudio");
+    audio.play().catch(function(error) {
+      console.log("음악 재생에 실패했습니다: ", error);
+    });
+
+    // 2. 사진 영역 보이기
     document.getElementById('photo-area').style.display = 'block';
     document.getElementById('btn-area').style.display = 'none';
-    // 사진 뜰 때 파티클 폭발!
+
+    // 3. 파티클 폭발 효과
     for(let i=0; i<30; i++) {
         setTimeout(createParticle, i * 50);
     }
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
-  // 눈송이와 하트 생성기
+  // 파티클 생성 함수
   function createParticle() {
     const particles = ["❄️", "❤️", "✨", "💖", "🤍"];
     const particle = document.createElement("div");
@@ -239,7 +254,6 @@
     setTimeout(() => particle.remove(), 7000);
   }
   
-  // 지속적으로 내리게 함
   setInterval(createParticle, 500);
 
   window.onload = () => {
