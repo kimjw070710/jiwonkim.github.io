@@ -3,134 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>한별이를 위한 페이지</title>
+<title>Merry Christmas for Hanbyeol</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Noto+Sans+KR:wght@300;500&display=swap" rel="stylesheet">
+
 <style>
+  :root {
+    --bg-dark: #0a2e1f; /* 딥 그린 */
+    --gold: #d4af37;    /* 클래식 골드 */
+    --soft-white: #f8f9fa;
+    --point-red: #c0392b;
+  }
+
   body {
     margin: 0;
-    font-family: 'Pretendard', sans-serif;
-    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
-    background-size: 400% 400%;
-    animation: gradientBG 12s ease infinite;
-    color: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    /* 고급스러운 다크 그린 그라데이션 */
+    background: radial-gradient(circle at center, #1a4a33 0%, #051a10 100%);
+    color: var(--soft-white);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow-y: auto;
+    overflow-x: hidden;
+    line-height: 1.6;
   }
 
-  @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  /* 배경 눈 내리는 효과 최적화 */
+  .snowflake {
+    position: fixed;
+    top: -10px;
+    color: white;
+    z-index: 0;
+    pointer-events: none;
+    animation: fall linear forwards;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(105vh) rotate(360deg); }
   }
 
   .container {
     width: 90%;
-    max-width: 600px;
-    padding: 60px 20px;
+    max-width: 650px;
+    padding: 80px 20px;
+    z-index: 10;
     box-sizing: border-box;
-    text-align: left;
   }
 
-  /* 맨 위에 뜰 디데이 스타일 */
+  /* 상단 디데이: 가독성과 고급스러움 강조 */
   #dday-area {
     text-align: center;
-    font-size: 1.5em;
-    margin-bottom: 50px;
+    font-size: 1.2em;
+    letter-spacing: 2px;
+    margin-bottom: 70px;
     opacity: 0;
-    animation: fadeIn 2s forwards;
+    animation: fadeInDown 2s forwards;
+    color: var(--gold);
+    text-transform: uppercase;
   }
 
   #days {
-    font-size: 1.8em;
-    color: #ffeb3b;
-    font-weight: bold;
+    font-size: 1.6em;
+    font-weight: 700;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 5px;
   }
 
+  /* 편지 텍스트: 명조체로 깊이감 부여 */
   .typing-line {
-    font-size: 2.2em;
-    font-weight: bold;
-    line-height: 1.6;
-    margin-bottom: 40px;
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 2em;
+    font-weight: 800;
+    line-height: 1.8;
+    margin-bottom: 50px;
     min-height: 1.2em;
     word-break: keep-all;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    color: #ffffff;
   }
 
-  /* 버튼 스타일 */
+  /* 버튼 디자인: 전문적인 UI 느낌 */
   #btn-area {
     display: none;
     text-align: center;
-    margin-top: 30px;
-    animation: fadeIn 1.5s forwards;
+    margin-top: 40px;
   }
 
   button {
-    padding: 15px 35px;
+    padding: 18px 45px;
     font-size: 1.1em;
-    border: none;
-    border-radius: 50px;
-    background: white;
-    color: #ff5f8a;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: 1px solid var(--gold);
+    border-radius: 4px; /* 약간 각진 느낌으로 전문성 강조 */
+    background: transparent;
+    color: var(--gold);
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
   }
 
-  button:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  button:hover {
+    background: var(--gold);
+    color: var(--bg-dark);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+  }
 
-  /* 사진 구역 */
+  /* 사진 구역: 폴라로이드보다 세련된 프레임 */
   #photo-area {
     display: none;
     text-align: center;
-    margin-top: 50px;
-    padding-bottom: 100px;
-    animation: fadeIn 2s forwards;
+    margin-top: 60px;
+    padding-bottom: 120px;
+  }
+
+  .photo-frame {
+    display: inline-block;
+    padding: 12px;
+    background: white;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: rotate(-2deg); /* 살짝 기울여 자연스러움 추가 */
+    margin-bottom: 40px;
   }
 
   .our-photo {
     width: 100%;
-    max-width: 320px;
-    border-radius: 20px;
-    border: 5px solid white;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    margin-bottom: 30px;
+    max-width: 350px;
+    display: block;
+  }
+
+  .final-msg {
+    font-family: 'Nanum Myeongjo', serif;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--gold);
+    margin-top: 20px;
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .heart {
-    position: fixed;
-    bottom: -20px;
-    animation: floatUp 6s linear forwards;
-    z-index: -1;
-  }
-  @keyframes floatUp {
-    to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-  }
 </style>
 </head>
 <body>
 
 <div class="container">
   <div id="dday-area">
-    우리가 사랑한 지 <span id="days"></span>일 ❤️
+    Since 2024.02.15 — <span id="days"></span> Days
   </div>
 
   <div id="letter-container"></div>
 
   <div id="btn-area">
-    <button onclick="showPhoto()">눌러볼래? 💌</button>
+    <button onclick="showPhoto()">OPEN THE GIFT 🎁</button>
   </div>
 
   <div id="photo-area">
-    <img src="love.jpg" alt="우리 사진" class="our-photo">
-    <p style="font-size: 1.8em; font-weight: bold; text-align: center;">사랑해 한별아 💖</p>
+    <div class="photo-frame">
+      <img src="love.jpg" alt="우리 사진" class="our-photo">
+    </div>
+    <p class="final-msg">Merry Christmas, 한별 💖</p>
   </div>
 </div>
 
 <script>
-  // 디데이 계산 (2024년 2월 15일 기준 679일 전후)
+  // 디데이 계산
   const startDate = new Date("2024-02-15"); 
   const today = new Date();
   const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
@@ -140,11 +182,11 @@
   const content = [
     "한별아, 너에게 전하고 싶은 말이 있어.",
     "우리가 만난 지 벌써 많은 시간이 흘렀네.",
-    "그동안 나랑 함께해줘서 너무 고마워.",
-    "너랑 같이 웃고 떠들던 모든 순간들이",
-    "나에게는 무엇보다 소중한 기억들이야.",
-    "세상에서 네가 제일 예쁘고 소중해.",
-    "앞으로의 시간도 지금처럼 함께하자."
+    "그동안 내 곁을 지켜줘서 정말 고마워.",
+    "너와 함께한 모든 순간들이",
+    "나에게는 가장 빛나는 기억들이야.",
+    "세상에서 네가 제일 소중한 거 알지?",
+    "앞으로의 계절도 항상 함께하자."
   ];
 
   const container = document.getElementById('letter-container');
@@ -164,46 +206,42 @@
           lineDiv.innerHTML += currentText.charAt(charIndex);
           charIndex++;
           window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-          setTimeout(typeChar, 100);
+          setTimeout(typeChar, 110);
         } else {
           lineIndex++;
-          setTimeout(typeLine, 800);
+          setTimeout(typeLine, 900);
         }
       }
       typeChar();
     } else {
-      // 편지가 다 써지면 버튼 등장
       document.getElementById('btn-area').style.display = 'block';
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
   }
 
-  // 사진 보여주기 함수
   function showPhoto() {
     document.getElementById('photo-area').style.display = 'block';
-    document.getElementById('btn-area').style.display = 'none'; // 버튼은 숨김
-    // 하트 폭발 효과
-    for(let j=0; j<20; j++) {
-      setTimeout(createHeart, j * 50);
-    }
+    document.getElementById('btn-area').style.display = 'none';
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
-  window.onload = () => {
-    setTimeout(typeLine, 1500); // 1.5초 후 타이핑 시작
-  };
-
-  function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = Math.random() * 20 + 20 + "px";
-    heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
+  // 전문적인 눈 내리는 효과 (❄ 대신 부드러운 원형 입자 사용 가능)
+  function createSnow() {
+    const snow = document.createElement("div");
+    snow.className = "snowflake";
+    snow.innerHTML = "❄"; // 또는 "●"로 변경하면 더 깔끔함
+    snow.style.left = Math.random() * 100 + "vw";
+    snow.style.opacity = Math.random() * 0.7 + 0.3;
+    snow.style.fontSize = Math.random() * 10 + 10 + "px";
+    snow.style.animationDuration = Math.random() * 5 + 5 + "s";
+    document.body.appendChild(snow);
+    setTimeout(() => snow.remove(), 10000);
   }
-  setInterval(createHeart, 600);
+  setInterval(createSnow, 400);
+
+  window.onload = () => {
+    setTimeout(typeLine, 1500);
+  };
 </script>
 
 </body>
