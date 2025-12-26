@@ -6,17 +6,20 @@
 <title>한별이를 위한 페이지</title>
 
 <style>
-/* 전체 배경 설정 */
+/* 배경 설정: 스크롤을 위해 height를 auto로 변경하고 최소 높이를 100vh로 설정 */
 body {
   margin: 0;
   font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
   text-align: center;
   color: white;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  /* overflow: hidden; 을 제거하여 스크롤 허용 */
   background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
   background-size: 400% 400%;
   animation: gradientBG 12s ease infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 @keyframes gradientBG {
@@ -25,16 +28,14 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* 중앙 컨텐츠 영역 */
+/* 컨테이너: 상하 여백을 주어 스크롤 시 여유를 줌 */
 .container {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  padding: 60px 20px; 
   z-index: 10;
-  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-/* 타이핑 텍스트 효과 */
 #typing {
   font-size: 2.2em;
   font-weight: bold;
@@ -42,7 +43,6 @@ body {
   min-height: 1.2em;
 }
 
-/* 서서히 나타나는 효과 */
 .fade {
   opacity: 0;
   animation: fadeIn 2s forwards;
@@ -52,7 +52,6 @@ body {
 
 @keyframes fadeIn { to { opacity: 1; } }
 
-/* 버튼 스타일 */
 button {
   margin-top: 25px;
   padding: 15px 35px;
@@ -71,42 +70,42 @@ button:hover {
   box-shadow: 0 6px 20px rgba(0,0,0,0.2); 
 }
 
-/* 숨겨진 메시지 구역 (사진 포함) */
 #hidden {
   display: none;
-  margin-top: 30px;
+  margin-top: 40px;
   animation: fadeIn 2s ease-in;
+  padding-bottom: 50px; /* 마지막 하단 여백 */
 }
 
-/* 사진 스타일 */
 .our-photo {
-  width: 80%;
-  max-width: 280px;
+  width: 85%;
+  max-width: 320px;
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   border: 5px solid white;
 }
 
-/* 떠다니는 하트 애니메이션 */
+/* 하트 애니메이션 */
 .heart {
   position: fixed;
   bottom: -20px;
   animation: floatUp 6s linear forwards;
   z-index: 1;
+  pointer-events: none; /* 하트가 클릭을 방해하지 않도록 설정 */
 }
 
 @keyframes floatUp {
   to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
 
-/* 반짝이는 별 효과 */
 .star {
-  position: absolute;
+  position: fixed; /* 스크롤해도 배경에 고정 */
   background: white;
   border-radius: 50%;
   opacity: 0.5;
   animation: twinkle 2s infinite;
+  z-index: 0;
 }
 
 @keyframes twinkle {
@@ -133,16 +132,15 @@ button:hover {
   <div id="hidden">
     <img src="love.jpg" alt="우리 사진" class="our-photo">
     
-    <div style="line-height: 1.8;">
+    <div style="line-height: 1.8; font-size: 1.2em;">
       앞으로도 계속 같이 웃고,<br>
       같이 걸어가고 싶어.<br><br>
-      <span style="font-size: 1.8em; font-weight: bold;">사랑해 한별아 💖</span>
+      <span style="font-size: 1.5em; font-weight: bold;">사랑해 한별아 💖</span>
     </div>
   </div>
 </div>
 
 <script>
-/* 1. 타이핑 효과 */
 const text = "한별아, 너에게 전하고 싶은 말이 있어";
 let i = 0;
 function typing() {
@@ -154,22 +152,22 @@ function typing() {
 }
 typing();
 
-/* 2. 날짜 계산 (679일 기준 설정) */
-const startDate = new Date("2024-02-18"); 
+/* 679일 기준 설정 */
+const startDate = new Date("2024-02-15"); 
 const today = new Date();
 const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
 document.getElementById("days").innerText = diff;
 
-/* 3. 버튼 클릭 시 사진/메시지 보이기 & 하트 폭발 */
 function showLove() {
   document.getElementById("hidden").style.display = "block";
-  // 하트 폭발 효과
+  // 버튼 클릭 시 하트 폭발
   for(let j=0; j<25; j++) {
     setTimeout(createHeart, j * 40);
   }
+  // 메시지가 나타나면 아래로 살짝 스크롤해주는 센스!
+  window.scrollBy({ top: 300, behavior: 'smooth' });
 }
 
-/* 4. 하트 생성기 */
 function createHeart() {
   const heart = document.createElement("div");
   heart.className = "heart";
@@ -180,9 +178,8 @@ function createHeart() {
   document.body.appendChild(heart);
   setTimeout(() => heart.remove(), 6000);
 }
-setInterval(createHeart, 600); // 지속적으로 하트 올라옴
+setInterval(createHeart, 600);
 
-/* 5. 별 반짝임 효과 */
 function createStar() {
   const star = document.createElement("div");
   star.className = "star";
@@ -199,4 +196,3 @@ setInterval(createStar, 250);
 
 </body>
 </html>
-
