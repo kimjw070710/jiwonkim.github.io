@@ -4,194 +4,148 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>한별이를 위한 페이지</title>
-
 <style>
-/* 배경 설정: 스크롤을 위해 height를 auto로 변경하고 최소 높이를 100vh로 설정 */
-body {
-  margin: 0;
-  font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-  text-align: center;
-  color: white;
-  min-height: 100vh;
-  /* overflow: hidden; 을 제거하여 스크롤 허용 */
-  background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
-  background-size: 400% 400%;
-  animation: gradientBG 12s ease infinite;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  body {
+    margin: 0;
+    font-family: 'Pretendard', sans-serif;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+    background-size: 400% 400%;
+    animation: gradientBG 12s ease infinite;
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 스크롤 허용 */
+    overflow-y: auto;
+  }
 
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
-/* 컨테이너: 상하 여백을 주어 스크롤 시 여유를 줌 */
-.container {
-  padding: 60px 20px; 
-  z-index: 10;
-  width: 100%;
-  box-sizing: border-box;
-}
+  .container {
+    width: 90%;
+    max-width: 600px;
+    padding: 100px 20px;
+    box-sizing: border-box;
+    text-align: left; /* 편지처럼 왼쪽 정렬 (중앙 정렬 원하면 center) */
+  }
 
-#typing {
-  font-size: 2.2em;
-  font-weight: bold;
-  margin-bottom: 20px;
-  min-height: 1.2em;
-}
+  /* 타이핑되는 각 문장의 스타일 */
+  .typing-line {
+    font-size: 2.2em; /* 요청하신 큰 글씨 크기 */
+    font-weight: bold;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    min-height: 1.2em;
+    word-break: keep-all;
+  }
 
-.fade {
-  opacity: 0;
-  animation: fadeIn 2s forwards;
-  margin-bottom: 15px;
-  font-size: 1.2em;
-}
+  #photo-area {
+    display: none;
+    text-align: center;
+    margin-top: 50px;
+    animation: fadeIn 2s forwards;
+  }
 
-@keyframes fadeIn { to { opacity: 1; } }
+  .our-photo {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 20px;
+    border: 5px solid white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
 
-button {
-  margin-top: 25px;
-  padding: 15px 35px;
-  font-size: 1.1em;
-  border: none;
-  border-radius: 50px;
-  background: white;
-  color: #ff5f8a;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: all 0.3s;
-}
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-button:hover { 
-  transform: scale(1.1); 
-  box-shadow: 0 6px 20px rgba(0,0,0,0.2); 
-}
-
-#hidden {
-  display: none;
-  margin-top: 40px;
-  animation: fadeIn 2s ease-in;
-  padding-bottom: 50px; /* 마지막 하단 여백 */
-}
-
-.our-photo {
-  width: 85%;
-  max-width: 320px;
-  border-radius: 20px;
-  margin-bottom: 25px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  border: 5px solid white;
-}
-
-/* 하트 애니메이션 */
-.heart {
-  position: fixed;
-  bottom: -20px;
-  animation: floatUp 6s linear forwards;
-  z-index: 1;
-  pointer-events: none; /* 하트가 클릭을 방해하지 않도록 설정 */
-}
-
-@keyframes floatUp {
-  to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-}
-
-.star {
-  position: fixed; /* 스크롤해도 배경에 고정 */
-  background: white;
-  border-radius: 50%;
-  opacity: 0.5;
-  animation: twinkle 2s infinite;
-  z-index: 0;
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
-}
+  /* 배경 하트 */
+  .heart {
+    position: fixed;
+    bottom: -20px;
+    animation: floatUp 6s linear forwards;
+    z-index: -1;
+  }
+  @keyframes floatUp {
+    to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+  }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div id="typing"></div>
-
-  <div class="fade" style="animation-delay:2.5s;">
-    너와 함께한 시간은 내 하루를 특별하게 만들어 ❤️
+<div class="container" id="letter-container">
   </div>
 
-  <div class="fade" style="animation-delay:4s;">
-    우리가 사랑한 지 <b><span id="days" style="font-size: 1.5em; color: #ffeb3b;"></span>일</b>
-  </div>
-
-  <button onclick="showLove()">눌러볼래? 💌</button>
-
-  <div id="hidden">
-    <img src="love.jpg" alt="우리 사진" class="our-photo">
-    
-    <div style="line-height: 1.8; font-size: 1.2em;">
-      앞으로도 계속 같이 웃고,<br>
-      같이 걸어가고 싶어.<br><br>
-      <span style="font-size: 1.5em; font-weight: bold;">사랑해 한별아 💖</span>
-    </div>
-  </div>
+<div id="photo-area" class="container">
+  <img src="love.jpg" alt="우리 사진" class="our-photo">
+  <p style="font-size: 1.5em; text-align: center; margin-top: 30px;">사랑해 한별아 💖</p>
 </div>
 
 <script>
-const text = "한별아, 너에게 전하고 싶은 말이 있어";
-let i = 0;
-function typing() {
-  if (i < text.length) {
-    document.getElementById("typing").innerHTML += text.charAt(i);
-    i++;
-    setTimeout(typing, 120);
+  // 📝 여기에 한별이에게 하고 싶은 말을 한 줄씩 적어주세요!
+  const content = [
+    "한별아, 너에게 전하고 싶은 말이 있어.",
+    "우리가 만난 지 벌써 679일이나 되었네.",
+    "그동안 나랑 함께해줘서 너무 고마워.",
+    "너랑 같이 웃고 떠들던 모든 순간들이",
+    "나에게는 무엇보다 소중한 기억들이야.",
+    "세상에서 네가 제일 예쁘고 소중해.",
+    "앞으로의 시간도 지금처럼 함께하자."
+  ];
+
+  const container = document.getElementById('letter-container');
+  let lineIndex = 0;
+
+  function typeLine() {
+    if (lineIndex < content.length) {
+      // 새로운 줄 만들기
+      const lineDiv = document.createElement('div');
+      lineDiv.className = 'typing-line';
+      container.appendChild(lineDiv);
+
+      let charIndex = 0;
+      let currentText = content[lineIndex];
+
+      function typeChar() {
+        if (charIndex < currentText.length) {
+          lineDiv.innerHTML += currentText.charAt(charIndex);
+          charIndex++;
+          // 글자가 써질 때마다 화면을 아래로 부드럽게 스크롤
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+          setTimeout(typeChar, 100); // 타자 속도 (0.1초)
+        } else {
+          // 한 줄 다 쓰면 다음 줄로
+          lineIndex++;
+          setTimeout(typeLine, 800); // 줄 사이 대기 시간 (0.8초)
+        }
+      }
+      typeChar();
+    } else {
+      // 모든 글이 써지면 사진 보여주기
+      document.getElementById('photo-area').style.display = 'block';
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
   }
-}
-typing();
 
-/* 679일 기준 설정 */
-const startDate = new Date("2024-02-15"); 
-const today = new Date();
-const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
-document.getElementById("days").innerText = diff;
+  // 시작
+  window.onload = () => {
+    setTimeout(typeLine, 1000);
+  };
 
-function showLove() {
-  document.getElementById("hidden").style.display = "block";
-  // 버튼 클릭 시 하트 폭발
-  for(let j=0; j<25; j++) {
-    setTimeout(createHeart, j * 40);
+  // 하트 생성기 (배경 효과)
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerText = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+    heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
   }
-  // 메시지가 나타나면 아래로 살짝 스크롤해주는 센스!
-  window.scrollBy({ top: 300, behavior: 'smooth' });
-}
-
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerText = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = Math.random() * 20 + 20 + "px";
-  heart.style.animationDuration = Math.random() * 3 + 4 + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 6000);
-}
-setInterval(createHeart, 600);
-
-function createStar() {
-  const star = document.createElement("div");
-  star.className = "star";
-  const size = Math.random() * 3 + "px";
-  star.style.width = size;
-  star.style.height = size;
-  star.style.top = Math.random() * 100 + "vh";
-  star.style.left = Math.random() * 100 + "vw";
-  document.body.appendChild(star);
-  setTimeout(() => star.remove(), 5000);
-}
-setInterval(createStar, 250);
+  setInterval(createHeart, 600);
 </script>
 
 </body>
