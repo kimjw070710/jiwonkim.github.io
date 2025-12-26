@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merry Christmas for Hanbyeol</title>
+<title>한별이를 위한 사이트</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@700;800&family=Gaegu:wght@400;700&display=swap" rel="stylesheet">
 
@@ -153,7 +153,7 @@
   @keyframes fadeIn { from { opacity: 0.4; } to { opacity: 1; } }
 </style>
 </head>
-<body onclick="playMusic()"> <div id="music-guide">화면을 터치하면 음악이 나와요 🎵</div>
+<body onclick="playMusic()"> <div id="music-guide">한별아 화면을 터치하면 음악이 나와! 🎵</div>
 
 <audio id="myAudio" loop>
   <source src="music.mp3" type="audio/mpeg">
@@ -172,19 +172,24 @@
 </div>
 
 <script>
-  const startDate = new Date("2024-02-15"); 
+  const startDate = new Date("2024-02-16"); 
   const today = new Date();
   const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
   document.getElementById("days").innerText = diff;
 
   const content = [
-    "한별아, 너에게 전하고 싶은 말이 있어.",
-    "우리가 만난 지 벌써 많은 시간이 흘렀네.",
+    "안녕 한별이! 이렇게 글을 남기는건 또 처음이네 ㅎㅎ",
+    "우리가 만난 지 벌써 많은 시간이 흘렀어.",
     "그동안 내 곁을 지켜줘서 정말 고마워.",
-    "너와 함께한 모든 순간들이",
+    "한별과 함께한 모든 순간들이",
     "나에게는 가장 빛나는 기억들이야.",
-    "세상에서 네가 제일 소중한 거 알지?",
-    "앞으로의 시간도 지금처럼 함께하자."
+    "세상에서 한별이를 내가 제일 소중해하고 사랑하는거 알지?",
+    "올해 두번째 크리스마스를 한별이와 보내서 너무 기뻐",
+    "우리의 좋은 관계와 우리의 미래를 위해서",
+    "앞으로 더 많이 노력할게",
+    "나의 자랑이자, 나의 버팀목이자, 나의 사랑 한별이",
+    "늘 사랑해💖",
+    "앞으로의 시간도 지금처럼 함께 행복하게 지내자~."
   ];
 
   const container = document.getElementById('letter-container');
