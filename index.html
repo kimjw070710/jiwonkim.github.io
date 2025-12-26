@@ -18,7 +18,6 @@
   body {
     margin: 0;
     font-family: 'Nanum Myeongjo', serif;
-    /* 따뜻하고 밝은 핑크 & 피치 그라데이션 */
     background: linear-gradient(135deg, #ffedef 0%, #ffd1d1 50%, #ffb7b2 100%);
     color: var(--deep-berry);
     min-height: 100vh;
@@ -27,9 +26,10 @@
     align-items: center;
     overflow-x: hidden;
     line-height: 1.6;
+    cursor: pointer; /* 클릭 유도를 위해 커서 변경 */
   }
 
-  /* 눈송이와 하트가 섞여 내리는 효과 */
+  /* 눈송이와 하트 효과 */
   .particle {
     position: fixed;
     top: -20px;
@@ -50,7 +50,6 @@
     box-sizing: border-box;
   }
 
-  /* 상단 디데이 */
   #dday-area {
     text-align: center;
     font-family: 'Gaegu', cursive;
@@ -71,7 +70,6 @@
     box-shadow: 0 4px 10px rgba(255, 183, 178, 0.5);
   }
 
-  /* 편지 텍스트 */
   .typing-line {
     font-size: 2.1em;
     font-weight: 800;
@@ -83,7 +81,6 @@
     text-shadow: 1px 1px 0px white;
   }
 
-  /* 버튼 디자인 */
   #btn-area {
     display: none;
     text-align: center;
@@ -104,12 +101,6 @@
     box-shadow: 0 5px 15px rgba(255, 183, 178, 0.6);
   }
 
-  button:hover {
-    background: #ff8fa3;
-    transform: scale(1.1) translateY(-3px);
-  }
-
-  /* 사진 구역 */
   #photo-area {
     display: none;
     text-align: center;
@@ -145,41 +136,47 @@
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
   }
+
+  /* 상단에 작게 띄울 안내문 (음악 재생용) */
+  #music-guide {
+    position: fixed;
+    top: 10px;
+    font-family: 'Gaegu', cursive;
+    font-size: 1.2em;
+    color: #e56b6f;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 5px 15px;
+    border-radius: 20px;
+    z-index: 100;
+    animation: fadeIn 1s infinite alternate;
+  }
+  @keyframes fadeIn { from { opacity: 0.4; } to { opacity: 1; } }
 </style>
 </head>
-<body>
+<body onclick="playMusic()"> <div id="music-guide">화면을 터치하면 음악이 나와요 🎵</div>
 
 <audio id="myAudio" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
-  <div id="dday-area">
-    우리가 사랑한 지 <span id="days"></span>일째 ❤️
-  </div>
-
+  <div id="dday-area">우리가 사랑한 지 <span id="days"></span>일째 ❤️</div>
   <div id="letter-container"></div>
-
   <div id="btn-area">
-    <button onclick="showPhoto()">선물 열어보기 & 음악 재생 🎁</button>
+    <button onclick="showPhoto()">선물 열어보기 🎁</button>
   </div>
-
   <div id="photo-area">
-    <div class="photo-frame">
-      <img src="love.jpg" alt="우리 사진" class="our-photo">
-    </div>
+    <div class="photo-frame"><img src="love.jpg" alt="우리 사진" class="our-photo"></div>
     <p class="final-msg">Merry Christmas, 한별아 💖</p>
   </div>
 </div>
 
 <script>
-  // 디데이 계산
   const startDate = new Date("2024-02-15"); 
   const today = new Date();
   const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
   document.getElementById("days").innerText = diff;
 
-  // 편지 내용
   const content = [
     "한별아, 너에게 전하고 싶은 말이 있어.",
     "우리가 만난 지 벌써 많은 시간이 흘렀네.",
@@ -187,32 +184,37 @@
     "너와 함께한 모든 순간들이",
     "나에게는 가장 빛나는 기억들이야.",
     "세상에서 네가 제일 소중한 거 알지?",
-    "앞으로의 계절도 항상 함께하자."
+    "앞으로의 시간도 지금처럼 함께하자."
   ];
 
   const container = document.getElementById('letter-container');
   let lineIndex = 0;
+  let isMusicPlaying = false;
 
-  // 타이핑 효과 함수
+  // 🎵 음악 재생 함수
+  function playMusic() {
+    if (!isMusicPlaying) {
+      const audio = document.getElementById("myAudio");
+      audio.play();
+      isMusicPlaying = true;
+      document.getElementById("music-guide").style.display = "none"; // 재생되면 안내문 숨김
+    }
+  }
+
   function typeLine() {
     if (lineIndex < content.length) {
       const lineDiv = document.createElement('div');
       lineDiv.className = 'typing-line';
       container.appendChild(lineDiv);
-
       let charIndex = 0;
       let currentText = content[lineIndex];
-
       function typeChar() {
         if (charIndex < currentText.length) {
           lineDiv.innerHTML += currentText.charAt(charIndex);
           charIndex++;
           window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
           setTimeout(typeChar, 110);
-        } else {
-          lineIndex++;
-          setTimeout(typeLine, 900);
-        }
+        } else { lineIndex++; setTimeout(typeLine, 900); }
       }
       typeChar();
     } else {
@@ -221,45 +223,28 @@
     }
   }
 
-  // 버튼 클릭 시 실행되는 함수
   function showPhoto() {
-    // 1. 음악 재생 시작
-    const audio = document.getElementById("myAudio");
-    audio.play().catch(function(error) {
-      console.log("음악 재생에 실패했습니다: ", error);
-    });
-
-    // 2. 사진 영역 보이기
+    // 버튼 눌렀을 때도 혹시 안나오면 재생 시도
+    playMusic();
     document.getElementById('photo-area').style.display = 'block';
     document.getElementById('btn-area').style.display = 'none';
-
-    // 3. 파티클 폭발 효과
-    for(let i=0; i<30; i++) {
-        setTimeout(createParticle, i * 50);
-    }
+    for(let i=0; i<30; i++) { setTimeout(createParticle, i * 50); }
     window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
   }
 
-  // 파티클 생성 함수
   function createParticle() {
     const particles = ["❄️", "❤️", "✨", "💖", "🤍"];
     const particle = document.createElement("div");
     particle.className = "particle";
     particle.innerHTML = particles[Math.floor(Math.random() * particles.length)];
     particle.style.left = Math.random() * 100 + "vw";
-    particle.style.opacity = Math.random() * 0.8 + 0.2;
-    particle.style.fontSize = Math.random() * 15 + 15 + "px";
     particle.style.animationDuration = Math.random() * 3 + 4 + "s";
     document.body.appendChild(particle);
     setTimeout(() => particle.remove(), 7000);
   }
   
   setInterval(createParticle, 500);
-
-  window.onload = () => {
-    setTimeout(typeLine, 1500);
-  };
+  window.onload = () => { setTimeout(typeLine, 1500); };
 </script>
-
 </body>
 </html>
