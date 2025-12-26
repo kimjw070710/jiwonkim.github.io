@@ -16,7 +16,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* 스크롤 허용 */
     overflow-y: auto;
   }
 
@@ -29,14 +28,28 @@
   .container {
     width: 90%;
     max-width: 600px;
-    padding: 100px 20px;
+    padding: 60px 20px;
     box-sizing: border-box;
-    text-align: left; /* 편지처럼 왼쪽 정렬 (중앙 정렬 원하면 center) */
+    text-align: left;
   }
 
-  /* 타이핑되는 각 문장의 스타일 */
+  /* 맨 위에 뜰 디데이 스타일 */
+  #dday-area {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 50px;
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+  }
+
+  #days {
+    font-size: 1.8em;
+    color: #ffeb3b;
+    font-weight: bold;
+  }
+
   .typing-line {
-    font-size: 2.2em; /* 요청하신 큰 글씨 크기 */
+    font-size: 2.2em;
     font-weight: bold;
     line-height: 1.6;
     margin-bottom: 40px;
@@ -44,10 +57,34 @@
     word-break: keep-all;
   }
 
+  /* 버튼 스타일 */
+  #btn-area {
+    display: none;
+    text-align: center;
+    margin-top: 30px;
+    animation: fadeIn 1.5s forwards;
+  }
+
+  button {
+    padding: 15px 35px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 50px;
+    background: white;
+    color: #ff5f8a;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  button:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+
+  /* 사진 구역 */
   #photo-area {
     display: none;
     text-align: center;
     margin-top: 50px;
+    padding-bottom: 100px;
     animation: fadeIn 2s forwards;
   }
 
@@ -57,11 +94,11 @@
     border-radius: 20px;
     border: 5px solid white;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
   }
 
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-  /* 배경 하트 */
   .heart {
     position: fixed;
     bottom: -20px;
@@ -75,19 +112,34 @@
 </head>
 <body>
 
-<div class="container" id="letter-container">
+<div class="container">
+  <div id="dday-area">
+    우리가 사랑한 지 <span id="days"></span>일 ❤️
   </div>
 
-<div id="photo-area" class="container">
-  <img src="love.jpg" alt="우리 사진" class="our-photo">
-  <p style="font-size: 1.5em; text-align: center; margin-top: 30px;">사랑해 한별아 💖</p>
+  <div id="letter-container"></div>
+
+  <div id="btn-area">
+    <button onclick="showPhoto()">눌러볼래? 💌</button>
+  </div>
+
+  <div id="photo-area">
+    <img src="love.jpg" alt="우리 사진" class="our-photo">
+    <p style="font-size: 1.8em; font-weight: bold; text-align: center;">사랑해 한별아 💖</p>
+  </div>
 </div>
 
 <script>
-  // 📝 여기에 한별이에게 하고 싶은 말을 한 줄씩 적어주세요!
+  // 디데이 계산 (2024년 2월 15일 기준 679일 전후)
+  const startDate = new Date("2024-02-15"); 
+  const today = new Date();
+  const diff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+  document.getElementById("days").innerText = diff;
+
+  // 편지 내용
   const content = [
     "한별아, 너에게 전하고 싶은 말이 있어.",
-    "우리가 만난 지 벌써 679일이나 되었네.",
+    "우리가 만난 지 벌써 많은 시간이 흘렀네.",
     "그동안 나랑 함께해줘서 너무 고마워.",
     "너랑 같이 웃고 떠들던 모든 순간들이",
     "나에게는 무엇보다 소중한 기억들이야.",
@@ -100,7 +152,6 @@
 
   function typeLine() {
     if (lineIndex < content.length) {
-      // 새로운 줄 만들기
       const lineDiv = document.createElement('div');
       lineDiv.className = 'typing-line';
       container.appendChild(lineDiv);
@@ -112,29 +163,36 @@
         if (charIndex < currentText.length) {
           lineDiv.innerHTML += currentText.charAt(charIndex);
           charIndex++;
-          // 글자가 써질 때마다 화면을 아래로 부드럽게 스크롤
           window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-          setTimeout(typeChar, 100); // 타자 속도 (0.1초)
+          setTimeout(typeChar, 100);
         } else {
-          // 한 줄 다 쓰면 다음 줄로
           lineIndex++;
-          setTimeout(typeLine, 800); // 줄 사이 대기 시간 (0.8초)
+          setTimeout(typeLine, 800);
         }
       }
       typeChar();
     } else {
-      // 모든 글이 써지면 사진 보여주기
-      document.getElementById('photo-area').style.display = 'block';
+      // 편지가 다 써지면 버튼 등장
+      document.getElementById('btn-area').style.display = 'block';
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
   }
 
-  // 시작
+  // 사진 보여주기 함수
+  function showPhoto() {
+    document.getElementById('photo-area').style.display = 'block';
+    document.getElementById('btn-area').style.display = 'none'; // 버튼은 숨김
+    // 하트 폭발 효과
+    for(let j=0; j<20; j++) {
+      setTimeout(createHeart, j * 50);
+    }
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
+
   window.onload = () => {
-    setTimeout(typeLine, 1000);
+    setTimeout(typeLine, 1500); // 1.5초 후 타이핑 시작
   };
 
-  // 하트 생성기 (배경 효과)
   function createHeart() {
     const heart = document.createElement("div");
     heart.className = "heart";
